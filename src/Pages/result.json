@@ -1,0 +1,18 @@
+{
+  "title": "AI Evaluation Results",
+  "sections": [
+    {
+      "heading": "Pitch Aspect Scores",
+      "chartPlaceholder": ""
+    },
+    {
+      "heading": "Gemini AI Feedback Summary",
+      "paragraphs": [
+        "Your pitch demonstrates a strong understanding of a significant market gap in sustainable tech. The integration of AI for impact assessment is particularly innovative and positions your solution uniquely.",
+        "Market potential is high, especially given the growing consumer and corporate demand for environmentally conscious products. Consider refining your go-to-market strategy to accelerate adoption in key sectors.",
+        "Feasibility appears solid, backed by a capable team. Ensure a clear roadmap for technology development and resource acquisition to scale effectively. The monetization strategy could benefit from exploring diverse revenue streams beyond initial product sales."
+      ]
+    }
+  ],
+  "footer": ""
+}
