@@ -1,72 +1,65 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../Pages/evaluation.css";
+import "./evaluation.css";
 
-const Evaluation = () => {
+function Evaluation() {
   const [idea, setIdea] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleEvaluate = async () => {
     if (!idea.trim()) {
-      alert("Please describe your startup idea first!");
+      alert("Please enter a startup idea!");
       return;
     }
 
     setLoading(true);
-
-    const ideaData = {
-      ideaDescription: idea,
-      timestamp: new Date().toISOString(),
-    };
-
     try {
-      const response = await fetch("http://localhost:5000/api/evaluate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(ideaData),
+      const res = await axios.post("http://localhost:5000/api/evaluate", {
+        ideaDescription: idea,
       });
 
-      const result = await response.json();
-
-      if (response.ok) {
-        const summaryText = result.summary; // ✅ store AI summary
-        console.log("✅ AI Summary:", summaryText);
-
-        // 👉 Navigate to Result page with summaryText
-        navigate("/result", { state: { summaryText } });
-      } else {
-        console.error("⚠️ Server Error:", result);
-        alert(result.error || "Failed to generate summary.");
-      }
+      const result = res.data;
+      navigate("/result", {
+        state: {
+          summaryText: result.summary,
+          scores: result.scores,
+        },
+      });
     } catch (error) {
-      console.error("❌ API Error:", error);
-      alert("⚠️ Server not responding. Please try again later.");
+      console.error("❌ Evaluation failed:", error);
+      alert("Error evaluating idea. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="startup-container">
-      <div className="form-card">
-        <h2>Your Startup Idea</h2>
+    <div className="evaluation-page">
+      <div className="evaluation-container">
+        <h1 className="evaluation-title">AI Startup Evaluator 🚀</h1>
+        <p className="evaluation-subtitle">
+          Describe your startup idea below and let our AI evaluate its potential.
+        </p>
 
         <textarea
-          className="idea-input"
-          placeholder="Describe your innovative startup idea in detail..."
+          placeholder="Describe your startup idea here..."
           value={idea}
           onChange={(e) => setIdea(e.target.value)}
+          className="evaluation-input"
         />
 
-        <button className="generate-btn" onClick={handleSubmit} disabled={loading}>
-          {loading ? "Generating..." : "Generate AI Summary"}
+        <button
+          onClick={handleEvaluate}
+          disabled={loading}
+          className={`evaluation-btn ${loading ? "loading" : ""}`}
+        >
+          {loading ? "Generate..." : "Generate Evaluation"}
         </button>
       </div>
     </div>
   );
-};
+}
 
 export default Evaluation;

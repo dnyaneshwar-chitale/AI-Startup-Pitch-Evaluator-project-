@@ -2,70 +2,76 @@ import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
 
-// ✅ Use correct model and API version
 const GEMINI_API_URL =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
-
 const API_KEY = process.env.GEMINI_API_KEY;
 
 export async function getGeminiSummary(ideaDescription) {
   try {
+    const prompt = `
+You are an expert **Startup Evaluation AI**.
+
+Analyze the following startup idea and return **only valid JSON** in this format (no extra text, markdown, or commentary):
+
+{
+  "summary": [
+    "Existence Check: (Does a similar startup already exist? Give 1–2 examples if known, else say 'Not found')",
+    "Current Market Status: (Is this industry growing, stable, or declining?)",
+    "Future Potential (3–5 years): (YES/NO + short reason)",
+    "Major Risks: (List 2–3 realistic risks)",
+    "Key to Success: (1–2 main success factors)",
+    "Common Mistakes or Failures: (1–2 frequent mistakes in such startups)"
+  ],
+  "scores": {
+    "Innovation": number (0–100),
+    "Market Potential": number (0–100),
+    "Feasibility": number (0–100),
+    "Team Strength": number (0–100),
+    "Monetization Strategy": number (0–100),
+    "Sustainability Impact": number (0–100)
+  }
+}
+
+Rules:
+- Be analytical and realistic.
+- Use factual, logic-based numbers (not random).
+- Keep JSON **strictly valid**.
+- All scores between 0 and 100.
+
+Startup Idea:
+"${ideaDescription}"
+`;
+
     const response = await axios.post(
       `${GEMINI_API_URL}?key=${API_KEY}`,
       {
         contents: [
           {
-            parts: [
-              {
-                text: `You are an expert startup evaluator AI.
-
-Your task is to check and analyze the following startup idea in clear, simple, and well-spaced text (not paragraph form).
-
-Before analysis, first verify if this startup name or concept already exists anywhere (companies, apps, or websites). Be factual and honest — if you are unsure, say “unclear” instead of guessing.
-
-Output in the following format with clean spacing between each point:
-
-1️⃣ Existence Check (Already Exists or Not)**  
-- Check whether a startup with this name or similar idea already exists.  
-- Mention 2-3 examples (if found) and their current status (successful, moderate, struggling).  
-- If not found, clearly say: “No existing startups found with this name or concept.”
-
-2️⃣ Current Market Status 
-- Explain if this idea or industry is currently trending, growing, or declining.  
-- Mention one recent market pattern or consumer trend related to it.
-
-3️⃣ Future Potential (Next 3-5 Years) 
-- Answer clearly: YES or NO — can this idea succeed?  
-- Give one short, practical reason for your answer.
-
-4️⃣ Main Risks  
-- Risk 1: (simple, realistic)  
-- Risk 2: (simple, realistic)  
-- Risk 3: (simple, realistic)
-
-5️⃣ Final Verdict 
-- Clearly say: “This startup idea is likely to work” OR “This startup idea is unlikely to work.”  
-- Add one line explaining why you reached this conclusion.
-
-Startup Idea:  
-{{ideaDescription}}
-
-
-
-Idea: ${ideaDescription}`,
-              },
-            ],
+            parts: [{ text: prompt }],
           },
         ],
       }
     );
 
-    // ✅ Correct path to extract the model response
-    const summary = response.data.candidates?.[0]?.content?.parts?.[0]?.text;
+    const resultText =
+      response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
-    if (!summary) throw new Error("No summary returned by Gemini");
+    if (!resultText) throw new Error("No response from Gemini API");
 
-    return summary;
+    // 🧩 Extract and clean JSON part only
+    const start = resultText.indexOf("{");
+    const end = resultText.lastIndexOf("}") + 1;
+    const jsonText = resultText.slice(start, end);
+
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonText);
+    } catch (err) {
+      console.error("⚠️ Failed to parse Gemini JSON:", jsonText);
+      throw new Error("Invalid JSON returned by Gemini");
+    }
+
+    return parsed;
   } catch (error) {
     console.error("❌ Gemini API Error:", error.response?.data || error.message);
     throw new Error("Gemini API request failed");

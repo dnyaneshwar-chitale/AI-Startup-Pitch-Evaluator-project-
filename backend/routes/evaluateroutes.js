@@ -11,10 +11,10 @@ evaluateRoutes.post("/", async (req, res) => {
       return res.status(400).json({ error: "ideaDescription is required" });
     }
 
-    const summary = await getGeminiSummary(ideaDescription);
-    res.json({ message: "AI Summary generated successfully", summary });
+    const result = await getGeminiSummary(ideaDescription);
+    res.json(result); // ✅ sends summary + scores
   } catch (error) {
     console.error("❌ Evaluation API Error:", error.message);
-    res.status(500).json({ error: "Failed to generate summary" });
+    res.status(500).json({ error: "Failed to generate evaluation" });
   }
 });
