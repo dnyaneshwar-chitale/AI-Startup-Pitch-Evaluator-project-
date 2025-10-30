@@ -1,91 +1,105 @@
-/* 🌐 Overall Page */
+/* 🌐 Page */
 .page {
-   background-color: white;
+  background-color: white;
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   text-align: center;
   padding-top: 20px;
 }
 
-/* 🏷️ Main Title */
+/* 🏷️ Title */
 .titles {
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 20px;
 }
 
-/* 🧾 Main Content Box */
+/* 🧾 Container */
 .cardContainer {
-     height: 100vh;
-    width: 90%;
-  /* background-color: rgb(240, 246, 245); */
+  min-height: 100vh;
+  width: 90%;
   border-radius: 8px;
   padding: 20px;
   display: flex;
   justify-content: space-between;
   gap: 30px;
-  
 }
 
 /* 📊 Left Side */
 .leftBox {
   width: 50%;
   text-align: center;
-  padding-right: 15px;
   background-color: white;
   border-radius: 10px;
-  padding-top: 10px;
-  box-shadow: 0 0 1px 1px rgba(196, 184, 184, 0.15);
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(196, 184, 184, 0.15);
 }
-
 
 /* 🧠 Right Side */
 .rightBox {
-    width: 50%;
+  width: 50%;
   text-align: left;
   background-color: rgb(211, 239, 240);
   padding: 10px;
   border-radius: 10px;
 }
 
-/* 🏷️ Subtitles */
-.subtitl {
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 10px;
-  /* background-color: #007bff; */
-}
-
-/* 📈 Placeholder Chart Box */
+/* 📈 Chart Box */
 .chartBox {
-  height: 400px; /* 🔹 chart ला पुरेशी जागा मिळेल */
-  /* margin-top: 40px; */
+  width: 100%;
+  max-width: 420px;
+  height: 340px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ✅ Wrapper inside chartBox */
+.chartWrapper {
+  width: 100%;
+  height: 100%;
   position: relative;
 }
 
+.chartWrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
 
-/* 🗒️ Paragraph Text */
-.text {
-  font-size: 14px;
+/* 🧾 Summary Box */
+.summary-box {
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: white;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
+  line-height: 1.6;
   color: #333;
-  margin-bottom: 8px;
-  line-height: 1.5;
-  padding: 10px;
+}
 
+/* 🧭 Scrollbar */
+.summary-box::-webkit-scrollbar {
+  width: 6px;
+}
+.summary-box::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+.summary-box::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 /* 🔘 Buttons */
 .buttonRow {
   margin-top: 25px;
-  font-size: 10px;
-  border-radius: 6px;
 }
 
 button {
@@ -95,7 +109,6 @@ button {
   border-radius: 6px;
   cursor: pointer;
   height: 35px;
-  gap: 10px;
 }
 
 .primaryBtn {
@@ -117,26 +130,45 @@ button:hover {
   font-size: 12px;
   color: #555;
 }
-/* 🧠 Right Side Summary Box Scroll */
-.summary-box {
-  max-height: 400px;        /* Limit height so it doesn’t overflow */
-  overflow-y: auto;         /* Enables vertical scrolling */
-  background-color: white;  /* Clean contrast background */
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
-  line-height: 1.6;
-  color: #333;
-}
 
-/* Optional: nice scrollbar */
-.summary-box::-webkit-scrollbar {
-  width: 6px;
+/* 📱 Responsive Fix */
+@media (max-width: 1024px) {
+  .chartBox {
+    max-width: 360px;
+    height: 320px;
+  }
 }
-.summary-box::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+@media (max-width: 720px) {
+  .cardContainer {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    gap: 15px;
+  }
+
+  .leftBox,
+  .rightBox {
+    width: 100%;
+    padding: 10px;
+  }
+
+  /* Chart full width for mobile */
+  .chartBox {
+    width: 100%;
+    max-width: 380px;
+    height: 380px;
+    margin: 0 auto;
+  }
+
+  .chartWrapper canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
 }
-.summary-box::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.3);
+.chartBox {
+  width: 100%;
+  height: 350px;
+  max-width: 500px;
+  margin: auto;
+  overflow: visible;
 }
