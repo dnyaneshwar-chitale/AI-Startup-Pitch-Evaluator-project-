@@ -38,9 +38,9 @@ function Evaluation() {
   return (
     <div className="evaluation-page">
       <div className="evaluation-container">
-        <h1 className="evaluation-title">AI Startup Evaluator 🚀</h1>
+        <h1 className="evaluation-title"> Startup Evaluator 🚀</h1>
         <p className="evaluation-subtitle">
-          Describe your startup idea below and let our AI evaluate its potential.
+          Share your startup vision and discover how far it can go.
         </p>
 
         <textarea
@@ -55,7 +55,7 @@ function Evaluation() {
           disabled={loading}
           className={`evaluation-btn ${loading ? "loading" : ""}`}
         >
-          {loading ? "Generate..." : "Generate Evaluation"}
+          {loading ? "Generating..." : "Generating Evaluation"}
         </button>
       </div>
     </div>
