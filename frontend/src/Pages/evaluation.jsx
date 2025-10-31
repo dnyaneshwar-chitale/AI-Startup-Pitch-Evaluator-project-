@@ -16,7 +16,7 @@ function Evaluation() {
 
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/evaluate", {
+      const res = await axios.post("https://ai-startup-pitch.onrender.com/api/evaluate", {
         ideaDescription: idea,
       });
 
