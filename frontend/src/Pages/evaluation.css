@@ -34,9 +34,9 @@
   font-size: 2.2rem;
   font-weight: 700;
   margin-bottom: 10px;
-  background: linear-gradient(90deg, #4dabf7, #0066ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  /* background-color:white ; */
+  /* -webkit-background-clip: text; */
+  /* -webkit-text-fill-color: transparent; */
 }
 
 .evaluation-subtitle {

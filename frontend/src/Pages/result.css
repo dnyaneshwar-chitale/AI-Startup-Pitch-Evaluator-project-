@@ -1,6 +1,6 @@
 /* 🌐 Page */
 .page {
-  background-color: white;
+  background-color: rgb(12, 11, 11);
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
@@ -14,6 +14,7 @@
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 20px;
+  color: white;
 }
 
 /* 🧾 Container */
@@ -34,7 +35,7 @@
   background-color: white;
   border-radius: 10px;
   padding: 10px;
-  box-shadow: 0 0 10px rgba(196, 184, 184, 0.15);
+  box-shadow: 0 0 10px rgba(26, 25, 25, 0.15);
 }
 
 /* 🧠 Right Side */
