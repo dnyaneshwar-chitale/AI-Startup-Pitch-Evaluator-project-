@@ -114,45 +114,57 @@ function Ai() {
   }, []);
 
   // ✅ PDF Download (same as before)
-  const downloadPDF = async () => {
-    const pdf = new jsPDF("p", "mm", "a4");
-    const margin = 15;
-    let y = margin;
+   // 🔹 Title
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(20);
+  pdf.text(data.title, 105, y, { align: "center" });
+  y += 15;
 
-    pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(20);
-    pdf.text(data.title, 105, y, { align: "center" });
-    y += 15;
+  // 🔹 Chart
+  const chartElement = document.querySelector(".chartBox");
+  if (chartElement) {
+    const canvas = await html2canvas(chartElement, { scale: 2 });
+    const chartImage = canvas.toDataURL("image/png");
+    const imgWidth = 150;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    pdf.addImage(chartImage, "PNG", margin, y, imgWidth, imgHeight);
+    y += imgHeight + 15; // chart नंतर थोडं gap
+  }
 
-    const chartElement = document.querySelector(".chartBox");
-    if (chartElement) {
-      const canvas = await html2canvas(chartElement, { scale: 2 });
-      const chartImage = canvas.toDataURL("image/png");
-      const imgWidth = 150;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      pdf.addImage(chartImage, "PNG", margin, y, imgWidth, imgHeight);
-      y += imgHeight + 10;
+  // 🔹 Section Title
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(14);
+  pdf.text("Gemini AI Feedback Summary", margin, y);
+  y += 10;
+
+  // 🔹 Summary Text (with gaps and padding)
+  pdf.setFont("helvetica", "normal");
+  pdf.setFontSize(12);
+
+  const lines = Array.isArray(summaryText)
+    ? summaryText.map((p, i) => `${i + 1}. ${p}`)
+    : [summaryText];
+
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const textWidth = pageWidth - margin * 2;
+
+  lines.forEach((line, index) => {
+    const wrapped = pdf.splitTextToSize(line, textWidth);
+    pdf.text(wrapped, margin, y);
+    y += wrapped.length * 7 + 4; 
+    if (y > 270) {
+      pdf.addPage();
+      y = margin;
     }
+  });
 
-    pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(14);
-    pdf.text("Gemini AI Feedback Summary", margin, y);
-    y += 10;
+  // 🔹 Footer
+  pdf.setFontSize(10);
+  pdf.setTextColor(100);
+  pdf.text(data.footer, 105, 285, { align: "center" });
 
-    pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(12);
-    const lines = Array.isArray(summaryText)
-      ? summaryText.map((p, i) => `${i + 1}. ${p}`)
-      : [summaryText];
-    const split = pdf.splitTextToSize(lines.join("\n\n"), 180);
-    pdf.text(split, margin, y);
-
-    pdf.setFontSize(10);
-    pdf.setTextColor(100);
-    pdf.text(data.footer, 105, 285, { align: "center" });
-
-    pdf.save("AI_Evaluation_Report.pdf");
-  };
+  pdf.save("AI_Evaluation_Report.pdf");
+};
 
   return (
     <div className="page">
