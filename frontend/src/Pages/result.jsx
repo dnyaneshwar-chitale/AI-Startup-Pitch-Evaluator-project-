@@ -169,7 +169,7 @@ function Ai() {
         </div>
 
         <div className="rightBox">
-          <h3 className="subtitle">Gemini AI Feedback Summary</h3>
+          <h3 className="subtitle">Future Report Summary</h3>
           <div className="summary-box">
             {Array.isArray(summaryText) ? (
               summaryText.map((item, idx) => (
