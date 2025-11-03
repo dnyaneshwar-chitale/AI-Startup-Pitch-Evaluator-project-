@@ -50,13 +50,20 @@ function Evaluation() {
           className="evaluation-input"
         />
 
-        <button
-          onClick={handleEvaluate}
-          disabled={loading}
-          className={`evaluation-btn ${loading ? "loading" : ""}`}
-        >
-          {loading ? "Generating..." : "Generating Evaluation"}
-        </button>
+              <button
+  onClick={handleEvaluate}
+  disabled={loading}
+  className={`evaluation-btn ${loading ? "loading" : ""}`}
+>
+  {loading ? (
+    <span className="btn-loading">
+      <span className="spinner"></span>
+      Generating...
+    </span>
+  ) : (
+    "Generate Evaluation"
+  )}
+</button>
       </div>
     </div>
   );
