@@ -128,13 +128,13 @@ function Ai() {
     const imgWidth = 150;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
     pdf.addImage(chartImage, "PNG", margin, y, imgWidth, imgHeight);
-    y += imgHeight + 15; // chart नंतर थोडं gap
+    y += imgHeight + 15; 
   }
 
   // 🔹 Section Title
   pdf.setFont("helvetica", "bold");
   pdf.setFontSize(14);
-  pdf.text("Gemini AI Feedback Summary", margin, y);
+  pdf.text("Future Report  Summary", margin, y);
   y += 10;
 
   // 🔹 Summary Text (with gaps and padding)
