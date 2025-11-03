@@ -87,6 +87,34 @@
   background: linear-gradient(90deg, #5a5a5a, #3a3a3a);
   cursor: not-allowed;
 }
+.btn-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Spinner animation */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(247, 244, 244, 0.5);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Keyframes for spin animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Button appearance while loading */
+.evaluation-btn.loading {
+  opacity: 0.85;
+  pointer-events: none;
+}
 
 @media (max-width: 600px) {
   .evaluation-container {
