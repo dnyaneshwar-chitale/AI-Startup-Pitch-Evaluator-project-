@@ -114,7 +114,14 @@ function Ai() {
   }, []);
 
   // ✅ PDF Download (same as before)
-   // 🔹 Title
+
+
+  const downloadPDF = async () => {
+  const pdf = new jsPDF("p", "mm", "a4");
+  const margin = 15;
+  let y = margin;
+
+  // 🔹 Title
   pdf.setFont("helvetica", "bold");
   pdf.setFontSize(20);
   pdf.text(data.title, 105, y, { align: "center" });
@@ -128,13 +135,13 @@ function Ai() {
     const imgWidth = 150;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
     pdf.addImage(chartImage, "PNG", margin, y, imgWidth, imgHeight);
-    y += imgHeight + 15; 
+    y += imgHeight + 15; // chart नंतर थोडं gap
   }
 
   // 🔹 Section Title
   pdf.setFont("helvetica", "bold");
   pdf.setFontSize(14);
-  pdf.text("Future Report  Summary", margin, y);
+  pdf.text("Gemini AI Feedback Summary", margin, y);
   y += 10;
 
   // 🔹 Summary Text (with gaps and padding)
@@ -151,7 +158,7 @@ function Ai() {
   lines.forEach((line, index) => {
     const wrapped = pdf.splitTextToSize(line, textWidth);
     pdf.text(wrapped, margin, y);
-    y += wrapped.length * 7 + 4; 
+    y += wrapped.length * 7 + 4; // 🧩 प्रत्येक point मध्ये gap आणि padding
     if (y > 270) {
       pdf.addPage();
       y = margin;
@@ -165,6 +172,7 @@ function Ai() {
 
   pdf.save("AI_Evaluation_Report.pdf");
 };
+
 
   return (
     <div className="page">
@@ -181,7 +189,7 @@ function Ai() {
         </div>
 
         <div className="rightBox">
-          <h3 className="subtitle">Future Report Summary</h3>
+          <h3 className="subtitle">Future Report  Summary</h3>
           <div className="summary-box">
             {Array.isArray(summaryText) ? (
               summaryText.map((item, idx) => (
@@ -213,3 +221,4 @@ function Ai() {
 }
 
 export default Ai;
+
